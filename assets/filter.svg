@@ -1,0 +1,32 @@
+<!-- Text outline filters -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="0%" height="0%">
+    <defs>
+    
+    <filter id="outlineL" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="gaussian" /> 
+        <feColorMatrix in="gaussian" result="meta" type="matrix"
+            values="0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 70 -1" />
+        <feMerge>
+            <feMergeNode in="meta" />
+            <feMergeNode in="SourceGraphic" />
+        </feMerge>
+    </filter>
+
+    <filter id="outlineM" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="gaussian" /> 
+        <feColorMatrix in="gaussian" result="meta" type="matrix"
+            values="0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 50 -1" />
+        <feMerge>
+            <feMergeNode in="meta" />
+            <feMergeNode in="SourceGraphic" />
+        </feMerge>
+    </filter>
+
+    </defs>
+</svg> 
