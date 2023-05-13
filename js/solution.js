@@ -23,7 +23,7 @@ function calculate(){
             error.innerHTML = "Invalid value length"; 
             return;
     }
-    if(!term.match(/^[01x]+$/)){
+    if(!term.match(/^[01a-z]+$/)){
         error.style.display = "block";
         error.innerHTML = "Use only 0 and 1";
         return;
@@ -34,8 +34,8 @@ function calculate(){
     // end of data validation
 
     // separate don't cares from the term, reformat as integers.
-    let mask = parseInt(term.replace(/[1x]/g,a => (a=='1')?'0':'1'),2);
-    term = parseInt(term.replace(/[x]/g,"1"),2);
+    let mask = parseInt(term.replace(/[1a-z]/g,a => (a=='1')?'0':'1'),2);
+    term = parseInt(term.replace(/[a-z]/g,"1"),2);
 
     worker.postMessage({
         action: 'search',
