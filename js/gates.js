@@ -6,7 +6,7 @@ function negate(term,var_count){
 // Terraria gate logic. 
 // Some functions need a variable count argument for negation.
 // XOR and XNOR needs special treatment, and is converted to a normalform with the least operations (performance increase in doing that is probably negligible)
-const gates = [
+const Gates = [
     ["⨀",{
         1:(t)=> t[0],
         2:(t,v_c)=>negate(t[0]^t[1] , v_c),

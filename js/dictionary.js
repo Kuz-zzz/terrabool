@@ -2,7 +2,7 @@
 // Represents boolean functions that can be realised with 1 gate in Terraria.
 // the dictionary gets heavy use, and generating it on the fly is slow.
 // [term, min depth to solve]
-const dictionary = [
+const Dictionary = [
     [0,1],
     [1,4],
     [2,4],
