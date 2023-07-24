@@ -10,8 +10,8 @@ importScripts("terms.js", "gates.js","dictionary.js");
 // function makeExpression(varCount,maxDepthepth,term,mask,func)
 const identity = (varCount,term,mask,val,count,solutions) => {
     for(let gate of Gates){
-        if ((gate[1][count](val.map(a => a[1]),varCount) | mask) == term)
-            solutions.push(val.map(a => a[0]).join(gate[0])); // valid expression found. add it to solutions
+        if ((gate.combine(val.map(a => a[1]),varCount) | mask) == term)
+            solutions.push(val.map(a => a[0]).join(gate.symbol)); // valid expression found. add it to solutions
     }
 }
 function makeExpressionsBFS(varCount, maxDepth, term, mask, callback = identity) {
@@ -65,7 +65,7 @@ onmessage = e => {
         case "test": // creates the lookup table from dictionary.js
             const testfunc = (varCount,term,mask,val,count,solutions) => {
                 for(let gate of Gates){
-                    const term = gate[1][count](val.map(a => a[1]),4);
+                    const term = gate.combine(val.map(a => a[1]),varCount);
                     solutions[term] = solutions[term] ? [term, Math.min(solutions[term][1], count)] : [term,count];
                 }
             }

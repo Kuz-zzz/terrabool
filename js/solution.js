@@ -47,8 +47,9 @@ function calculate(){
 
     loader.style.display = "inline-block";
 }
-
+var start;
 function startTest(varCount,maxDepth){
+    start = Date.now();
     worker.postMessage({
         action: 'test',
         varCount: varCount,
@@ -74,7 +75,9 @@ worker.onmessage = e => {
         break;
 
         case "test":
-            console.log(e.data.results.join("\n"));
+        let timeTaken = Date.now() - start;
+        console.log(Math.round(timeTaken/1000) + " seconds");
+            console.log(e.data.results.filter(a => a != null));
         break;
     }
 }

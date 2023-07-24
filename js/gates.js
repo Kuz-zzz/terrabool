@@ -4,130 +4,35 @@ function negate(term,var_count){
 }
 
 // Terraria gate logic. 
-// Some functions need a variable count argument for negation.
-// XOR and XNOR needs special treatment, and is converted to a normalform with the least operations (performance increase in doing that is probably negligible)
+function Xor(numbers){
+    let result = 0;
+    for (let i = 0; i < 32; i++) {
+        let bitCount = 0;
+
+        for (const number of numbers) {
+        bitCount += (number >> i) & 1;
+        }
+        if (bitCount == 1)
+            result |= 1 << i;
+    }
+    return result;
+}
+
 const Gates = [
-    ["⨀",{
-        1:(t)=> t[0],
-        2:(t,v_c)=>negate(t[0]^t[1] , v_c),
-        3:(t,v_c)=>negate((t[0] & t[1] & t[2]) ^ t[0] ^ t[1] ^ t[2] , v_c),
-        4:(t,v_c)=>negate(
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3]
-        ,v_c),
-        5:(t,v_c)=>negate(
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[1] & t[4]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[0] & t[2] & t[4]) ^ 
-            (t[0] & t[3] & t[4]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[4]) ^ 
-            (t[1] & t[3] & t[4]) ^ 
-            (t[2] & t[3] & t[4]) ^ 
-            (t[0] & t[1] & t[2] & t[3] & t[4]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3] ^ t[4]
-        ,v_c),
-        6:(t,v_c)=>negate(
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[1] & t[4]) ^ 
-            (t[0] & t[1] & t[5]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[0] & t[2] & t[4]) ^ 
-            (t[0] & t[2] & t[5]) ^ 
-            (t[0] & t[3] & t[4]) ^ 
-            (t[0] & t[3] & t[5]) ^ 
-            (t[0] & t[4] & t[5]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[4]) ^ 
-            (t[1] & t[2] & t[5]) ^ 
-            (t[1] & t[3] & t[4]) ^ 
-            (t[1] & t[3] & t[5]) ^ 
-            (t[1] & t[4] & t[5]) ^ 
-            (t[2] & t[3] & t[4]) ^ 
-            (t[2] & t[3] & t[5]) ^ 
-            (t[2] & t[4] & t[5]) ^ 
-            (t[3] & t[4] & t[5]) ^
-            (t[0] & t[1] & t[2] & t[3] & t[4]) ^ 
-            (t[0] & t[1] & t[2] & t[3] & t[5]) ^
-            (t[0] & t[1] & t[2] & t[4] & t[5]) ^
-            (t[0] & t[1] & t[3] & t[4] & t[5]) ^
-            (t[0] & t[2] & t[3] & t[4] & t[5]) ^
-            (t[1] & t[2] & t[3] & t[4] & t[5]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3] ^ t[4] ^ t[5]
-        ,v_c),
-    }],
-    ["⊕",{
-        1:(t)=> t[0],
-        2:(t)=> t[0]^t[1],
-        3:(t)=> (t[0] & t[1] & t[2]) ^ t[0] ^ t[1] ^ t[2],
-        4:(t)=>
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3],
-        5:(t)=>
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[1] & t[4]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[0] & t[2] & t[4]) ^ 
-            (t[0] & t[3] & t[4]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[4]) ^ 
-            (t[1] & t[3] & t[4]) ^ 
-            (t[2] & t[3] & t[4]) ^ 
-            (t[0] & t[1] & t[2] & t[3] & t[4]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3] ^ t[4],
-        6:(t)=>
-            (t[0] & t[1] & t[2]) ^ 
-            (t[0] & t[1] & t[3]) ^ 
-            (t[0] & t[1] & t[4]) ^ 
-            (t[0] & t[1] & t[5]) ^ 
-            (t[0] & t[2] & t[3]) ^ 
-            (t[0] & t[2] & t[4]) ^ 
-            (t[0] & t[2] & t[5]) ^ 
-            (t[0] & t[3] & t[4]) ^ 
-            (t[0] & t[3] & t[5]) ^ 
-            (t[0] & t[4] & t[5]) ^ 
-            (t[1] & t[2] & t[3]) ^ 
-            (t[1] & t[2] & t[4]) ^ 
-            (t[1] & t[2] & t[5]) ^ 
-            (t[1] & t[3] & t[4]) ^ 
-            (t[1] & t[3] & t[5]) ^ 
-            (t[1] & t[4] & t[5]) ^ 
-            (t[2] & t[3] & t[4]) ^ 
-            (t[2] & t[3] & t[5]) ^ 
-            (t[2] & t[4] & t[5]) ^ 
-            (t[3] & t[4] & t[5]) ^
-            (t[0] & t[1] & t[2] & t[3] & t[4]) ^ 
-            (t[0] & t[1] & t[2] & t[3] & t[5]) ^
-            (t[0] & t[1] & t[2] & t[4] & t[5]) ^
-            (t[0] & t[1] & t[3] & t[4] & t[5]) ^
-            (t[0] & t[2] & t[3] & t[4] & t[5]) ^
-            (t[1] & t[2] & t[3] & t[4] & t[5]) ^ 
-            t[0] ^ t[1] ^ t[2] ^ t[3] ^ t[4] ^ t[5],
-    }],
-    ["∧", {
-        1:(t)=>t[0],
-        2:(t)=>t[0]&t[1],
-        3:(t)=>t[0]&t[1]&t[2],
-        4:(t)=>t[0]&t[1]&t[2]&t[3],
-        5:(t)=>t[0]&t[1]&t[2]&t[3]&t[4],
-        6:(t)=>t[0]&t[1]&t[2]&t[3]&t[4]&t[5],
-    }],
-    ["∨", { // after introducing constants to the terms table, the OR function should be redundant and removed. Need to test this.
-        1:(t)=>t[0],
-        2:(t)=>t[0]|t[1],
-        3:(t)=>t[0]|t[1]|t[2],
-        4:(t)=>t[0]|t[1]|t[2]|t[3],
-        5:(t)=>t[0]|t[1]|t[2]|t[3]|t[4],
-        6:(t)=>t[0]|t[1]|t[2]|t[3]|t[4]|t[5],
-    }],
+    {   
+        symbol:"⨀",
+        combine: (numbers,vcount) => negate(Xor(numbers),vcount)
+    },
+    {   
+        symbol:"⊕", 
+        combine: (numbers) => Xor(numbers)
+    },
+    {   
+        symbol:"∧",
+        combine: (numbers) => numbers.reduce((a, b) => a & b)
+    },
+    {   
+        symbol:"∨",
+        combine: (numbers) => numbers.reduce((a, b) => a | b)
+    },
 ];
