@@ -1,19 +1,28 @@
 importScripts("terms.js", "gates.js","dictionary.js");
 
-// makeExpressionsBFS()
-// Generates all possible expressions for a given term, combinations generated in breadth-first-like order.
-// varCount: number of variables (2 to 4)
-// maxDepth: maximum depth of the expression. i.e. the maximum number of terms
-// term: the term to be expressed
-// mask: a mask taking care of don't cares
-// func: the function to be used. Must be an array with the name of the function and a dictionary with the function for each depth.
-// function makeExpression(varCount,maxDepthepth,term,mask,func)
+/**
+ * Default validation function. Pushes valid text based expressions to the solutions array.
+ * @param {number} varCount: number of variables (2 to 4)
+ * @param {number} term: the term to be expressed
+ * @param {number} mask: a mask taking care of don't cares
+ * @param {Array.<{string, number}>} val: combinations of [Printable expression, Truth table value]
+ * @param {number} count: the number of terms in the expression
+ * @param {string[]} solutions: the array of solutions
+ */
 const identity = (varCount,term,mask,val,count,solutions) => {
     for(let gate of Gates){
         if ((gate.combine(val.map(a => a[1]),varCount) | mask) == term)
             solutions.push(val.map(a => a[0]).join(gate.symbol)); // valid expression found. add it to solutions
     }
 }
+/**
+ * Generates all possible expressions for a given term, combinations generated in breadth-first-like order.
+ * @param {number} varCount: number of variables (2 to 4)
+ * @param {number} maxDepth: maximum depth of the expression. i.e. the maximum number of terms
+ * @param {number} term: the term to be expressed
+ * @param {number} mask: a mask taking care of don't cares
+ * @param {requestCallback} callback: a callback function, which should validate the expression and add it to the solutions array
+ */
 function makeExpressionsBFS(varCount, maxDepth, term, mask, callback = identity) {
     const legalTerms = Terms[varCount];
     let queue = [...legalTerms].map((v, i) => ({ val: [v], idx: i, count: 1 })); // initialize the queue with the individual terms
@@ -62,7 +71,16 @@ onmessage = e => {
                 postMessage({action:"double",results1:results1,results2:results2});
             }
         break;
-        case "test": // creates the lookup table from dictionary.js
+        case "test":
+            /**
+             * Creates the lookup table from dictionary.js
+             * @param {number} varCount: number of variables (2 to 4)
+             * @param {number} term: unused
+             * @param {number} mask: unused
+             * @param {Array.<{string, number}>} val: combinations of [Printable expression, Truth table value]
+             * @param {number} count: the number of terms in the expression
+             * @param {Array.<{number, number}>} solutions: array of [boolean function, min depth to solve]
+             */
             const testfunc = (varCount,term,mask,val,count,solutions) => {
                 for(let gate of Gates){
                     const term = gate.combine(val.map(a => a[1]),varCount);

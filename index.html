@@ -23,10 +23,11 @@
             <form onsubmit="event.preventDefault(); calculate()">
                 <input type="text" id="term" placeholder="001100110000xxxx">
                 <button>Calculate</button>
+                <a id="download" href="" style="display: none;">download .csv</a>
                 <div id="loader" style="display: none;"></div>
             </form>
             <p id="error" style="display: none;">Invalid value length</p>
-            <p id="result"></p>
+            <div id="result"></div>
         </section>
         <section id="example">
             <h2>How to use the minifier</h2>
