@@ -23,10 +23,11 @@
             <form onsubmit="event.preventDefault(); calculate()">
                 <input type="text" id="term" placeholder="001100110000xxxx">
                 <button>Calculate</button>
+                <a id="download" href="" style="display: none;">download .csv</a>
                 <div id="loader" style="display: none;"></div>
             </form>
             <p id="error" style="display: none;">Invalid value length</p>
-            <p id="result"></p>
+            <div id="result"></div>
         </section>
         <section id="example">
             <h2>How to use the minifier</h2>
@@ -56,21 +57,28 @@
             
             <p>Type in the output values for the function as a binary number. The given truth table would be entered as <i>xxx0011011001100</i>. (The x'es are don't cares.)</p>
             <h3>How to interpret a generated boolean function.</h3>
-            <p>First, you must be familiar with logical operations AND(∧), OR(∨), NOT(¬), XOR(⊻,⊕), XNOR(⨀).</p>
-            <p>There are two kinds of XOR used in this app. One is the "parity function" XOR, which will be used without the gate in Terraria, denoted by <b>⊻</b>. The other is the "Turns on when exactly one lamp is active" XOR, which means that you have to use that gate in the game, denoted by <b>⊕</b>.</p>
-            <p>Using the function generated from the example table, we get "¬c&nbsp;⊕&nbsp;(¬a⊻c)&nbsp;⊕&nbsp;(¬c⊻d)&nbsp;⊕&nbsp;(a⊻c⊻d)"</p>
+            <p>First, you must be familiar with logical operations AND(∧), OR(∨), NOT(¬), XOR(⊕), XNOR(⨀).</p>
+            <p>There are two kinds of XOR used in this app. One is the "parity function" XOR, which will be used without the gate in Terraria, and is implied in the result by writing inputs right after eachother. The other is the "Turns on when exactly one lamp is active" XOR, which means that you have to use that gate in the game, denoted by <b>⊕</b>.</p>
+            <p>Using the function generated from the example table, we get "¬c&nbsp;⊕&nbsp;¬ac&nbsp;⊕&nbsp;¬cd&nbsp;⊕&nbsp;acd"</p>
             <h3>Here's how this function translates into Terraria</h3>
             <p><mark class="term"><mark class="negation">¬</mark>c</mark>
             &nbsp;<mark class="gate">⊕</mark>&nbsp;
-            <mark class="term">(<mark class="negation">¬</mark>a⊻c)</mark>
+            <mark class="term"><mark class="negation">¬</mark>ac</mark>
             &nbsp;<mark class="gate">⊕</mark>&nbsp;
-            <mark class="term">(<mark class="negation">¬</mark>c⊻d)</mark>
+            <mark class="term"><mark class="negation">¬</mark>cd</mark>
             &nbsp;<mark class="gate">⊕</mark>&nbsp;
-            <mark class="term">(a⊻c⊻d)</mark></p>
+            <mark class="term">acd</mark></p>
             <p>
                 <mark class="gate">The operation connecting the terms show which logic gate to use ingame.</mark><br>
                 <mark class="term">The terms show which inputs connect to a single logic gate lamp.</mark><br>
                 <mark class="negation">The negation sign in front of a term means that the gate lamp should be in an "ON" state</mark>
+            </p>
+            <p>
+                Not all functions can be expressed with a single logic gate. In these cases, the app will list functions in two columns. choose one from each column, create the two gates ingame, and combine their outputs with a common wire.
+            </p>
+            <h3>(November 2023 update) This version now lists all equivalent functions!</h3>
+            <p>
+                When making multi-output modules, the first result rarely has no wire routing issues. This is why the app now lists all equivalent functions, so you can choose the one that works best for you.
             </p>
         </section>
     </main>

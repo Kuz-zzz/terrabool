@@ -2,21 +2,23 @@ const worker = new Worker("js/worker.js");
 const error = document.getElementById("error");
 const result = document.getElementById("result");
 const loader = document.getElementById("loader");
-let results;
+const a_download = document.getElementById("download");
+const input_term = document.getElementById("term");
+
 function calculate(){
     // Data validation
-    let term = document.getElementById("term").value;
-    let var_count, max_d = 4;
+    let term = input_term.value;
+    let varCount, maxDepth = 4;
     switch (term.length) {
         case 4:
-            var_count = 2;
+            varCount = 2;
             break;
         case 8:
-            var_count = 3;
+            varCount = 3;
             break;
         case 16:
-            var_count = 4;
-            max_d = 5;
+            varCount = 4;
+            maxDepth = 5;
             break;
         default:
             error.style.display = "block";
@@ -28,10 +30,12 @@ function calculate(){
         error.innerHTML = "Use only 0 and 1";
         return;
     }
-    
+    // end of data validation
+
     result.innerHTML = "";
     error.style.display = "none";
-    // end of data validation
+    a_download.style.display = "none";
+    loader.style.display = "inline-block";
 
     // separate don't cares from the term, reformat as integers.
     let mask = parseInt(term.replace(/[1a-z]/g,a => (a=='1')?'0':'1'),2);
@@ -39,64 +43,67 @@ function calculate(){
 
     worker.postMessage({
         action: 'search',
-        var_count: var_count,
-        max_d: max_d,
+        varCount: varCount,
+        maxDepth: maxDepth,
         term: term,
         mask: mask
     });
-
-    loader.style.display = "inline-block";
 }
-
-function startTest(depth){
+var start;
+function startTest(varCount,maxDepth){
+    start = Date.now();
     worker.postMessage({
         action: 'test',
-        depth: depth
+        varCount: varCount,
+        maxDepth: maxDepth
     });
 }
 
 worker.onmessage = e => {
-    switch (e.data[0]) {
+    switch (e.data.action) {
         case "result":
             loader.style.display = "none";
-            solutions = e.data[1];
-            console.table(solutions);// keep this log for anyone who wants to see the other candidates
 
-            if(solutions.length > 0){
-                min = Math.min(...solutions.map(a => a[1]));
-                solutions = solutions.filter(term => term[1] === min).sort((a,b)=>a[0].length-b[0].length)[0][0];
+            if(e.data.results){
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF" + e.data.results.join("\n");
+                let encodedUri = encodeURI(csvContent);
+                a_download.setAttribute("href", encodedUri);
+                a_download.setAttribute("download", input_term.value + ".csv");
+                a_download.style.display = "inline-block";
 
-                result.innerHTML = solutions;
-                break;
+                result.innerHTML = e.data.results.join("<br>");
+            }else{
+                result.innerHTML = `Something went wrong. Please report this as a bug.`;
             }
-
-            result.innerHTML = `You should not be able to see this message. Please report this as a bug.`;
         break;
 
         case "double":
             loader.style.display = "none";
-            solutions = e.data[1];
-            solutions2 = e.data[2];
-            console.table(solutions);
-            console.table(solutions2);
 
-            if(solutions.length > 0 && solutions2.length > 0){
-                min = Math.min(...solutions.map(a => a[1]));
-                min2 = Math.min(...solutions2.map(a => a[1]));
-                solutions = solutions.filter(term => term[1] === min).sort((a,b)=>a[0].length-b[0].length)[0][0];
-                solutions2 = solutions2.filter(term => term[1] === min2).sort((a,b)=>a[0].length-b[0].length)[0][0];
+            if(e.data.results1 && e.data.results2){
+                let array = [e.data.results1,e.data.results2];
+                array = array[0].map((_, colIndex) => array.map(row => row[colIndex])); // transpose
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
+                + array.map(a => a.join(",")).join("\n");
 
-                result.innerHTML = `{${solutions}} ⊻<br>{${solutions2}}`;
-                break;
+                let encodedUri = encodeURI(csvContent);
+                a_download.setAttribute("href", encodedUri);
+                a_download.setAttribute("download", input_term.value + ".csv");
+                a_download.style.display = "inline-block";
+
+                result.innerHTML = `<div class="double">
+                    <div>${e.data.results1.join("<br>")}</div>
+                    <div>${e.data.results2.join("<br>")}</div>
+                </div>`;
+            }else{
+                result.innerHTML = `Something went wrong. Please report this as a bug.`;
             }
-    
-            result.innerHTML = `You should not be able to see this message. Please report this as a bug.`;
         break;
 
         case "test":
-            results = e.data[1];
-            // console.log(results.reduce((a,b)=>a+b));
-            console.log(results);
+        let timeTaken = Date.now() - start;
+        console.log(Math.round(timeTaken/1000) + " seconds");
+            console.log(e.data.results.filter(a => a != null));
         break;
     }
 }

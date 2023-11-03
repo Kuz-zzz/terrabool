@@ -12,7 +12,7 @@ html{
 }
 body{
     display: grid;
-    grid-gap: 1rem;
+    gap: 1rem;
     margin: 0 clamp(0px, 8vw - 60px, 100px);
     background-image: linear-gradient(#6385D0, #99CAE0);
 }
@@ -35,7 +35,7 @@ p{
 #table_img{
     float: right;
     display: grid;
-    grid-gap: 10px;
+    gap: 10px;
 }
 #example_img{
     width: 200px;
@@ -53,7 +53,7 @@ td,th{
 }
 main{
     display: grid;
-    grid-template-columns: minmax(250px, 1fr) 2fr;
+    grid-template-columns: 2fr 3fr;
 }
 h1{
     font-family: andy, sans-serif;
@@ -85,19 +85,19 @@ section{
     padding: 10px;
 }
 #minifier{
-    border-image: url(assets/border.png) 16 round;
+    border-image: url(assets/border_red.png) 16 round;
 }
 mark{
     font-weight: bold;
 }
 mark.term{
-    background-color: #00C8FF;
+    background-color: #00C8FF77;
 }
 mark.gate{
-    background-color: #E61E58;
+    background-color: #E61E5877;
 }
 mark.negation{
-    background-color: #004cff;
+    background-color: #004cff77;
 }
 #loader{
     border-radius: 50%;
@@ -126,4 +126,14 @@ form > :is(input, button){
     main{
         grid-template-columns: 1fr;
     }
+}
+
+.double{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    border: 10px solid transparent;
+    border-image: url(assets/border_blue.png) 16 round;
+    padding: 10px;
+    margin: 10px auto;
 }
