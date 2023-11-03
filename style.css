@@ -53,7 +53,7 @@ td,th{
 }
 main{
     display: grid;
-    grid-template-columns: minmax(250px, 1fr) 2fr;
+    grid-template-columns: 2fr 3fr;
 }
 h1{
     font-family: andy, sans-serif;
@@ -91,13 +91,13 @@ mark{
     font-weight: bold;
 }
 mark.term{
-    background-color: #00C8FF;
+    background-color: #00C8FF77;
 }
 mark.gate{
-    background-color: #E61E58;
+    background-color: #E61E5877;
 }
 mark.negation{
-    background-color: #004cff;
+    background-color: #004cff77;
 }
 #loader{
     border-radius: 50%;
