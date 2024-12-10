@@ -14,7 +14,7 @@
         <h2 role="doc-subtitle">A Terraria boolean function minifier</h2>
         <section>
             <h2>About</h2>
-            <p>This app is made to exploit how logic gates and wires behave in Terraria. The main property being how signals don't necessarily turn on a device when power is provided, but rather toogle the on/off state. This property can be used to make circuits, that maximizes use of XOR logic, as connecting two wires together is the same as putting them through an XOR gate.</p>
+            <p>This app is made to exploit how logic gates and wires behave in Terraria. The main property being how signals don't necessarily turn on a device when power is provided, but rather toggle the on/off state. This property can be used to make circuits, that maximizes use of XOR logic, as connecting two wires together is the same as putting them through an XOR gate.</p>
         </section>
     </header>
     <main>
@@ -51,14 +51,14 @@
                     <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>x</td></tr>
                     <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>x</td></tr>
                 </table>
-                <img id="example_img" src="img/example.gif" alt="ingame example of the function">
+                <img id="example_img" src="img/example.gif" alt="in-game example of the function">
             </div>
             
             
             <p>Type in the output values for the function as a binary number. The given truth table would be entered as <i>xxx0011011001100</i>. (The x'es are don't cares.)</p>
             <h3>How to interpret a generated boolean function.</h3>
             <p>First, you must be familiar with logical operations AND(∧), OR(∨), NOT(¬), XOR(⊕), XNOR(⨀).</p>
-            <p>There are two kinds of XOR used in this app. One is the "parity function" XOR, which will be used without the gate in Terraria, and is implied in the result by writing inputs right after eachother. The other is the "Turns on when exactly one lamp is active" XOR, which means that you have to use that gate in the game, denoted by <b>⊕</b>.</p>
+            <p>There are two kinds of XOR used in this app. One is the "parity function" XOR, which will be used without the gate in Terraria, and is implied in the result by writing inputs right after each other. The other is the "Turns on when exactly one lamp is active" XOR, which means that you have to use that gate in the game, denoted by <b>⊕</b>.</p>
             <p>Using the function generated from the example table, we get "¬c&nbsp;⊕&nbsp;¬ac&nbsp;⊕&nbsp;¬cd&nbsp;⊕&nbsp;acd"</p>
             <h3>Here's how this function translates into Terraria</h3>
             <p><mark class="term"><mark class="negation">¬</mark>c</mark>
@@ -69,12 +69,12 @@
             &nbsp;<mark class="gate">⊕</mark>&nbsp;
             <mark class="term">acd</mark></p>
             <p>
-                <mark class="gate">The operation connecting the terms show which logic gate to use ingame.</mark><br>
+                <mark class="gate">The operation connecting the terms show which logic gate to use in-game.</mark><br>
                 <mark class="term">The terms show which inputs connect to a single logic gate lamp.</mark><br>
                 <mark class="negation">The negation sign in front of a term means that the gate lamp should be in an "ON" state</mark>
             </p>
             <p>
-                Not all functions can be expressed with a single logic gate. In these cases, the app will list functions in two columns. choose one from each column, create the two gates ingame, and combine their outputs with a common wire.
+                Not all functions can be expressed with a single logic gate. In these cases, the app will list functions in two columns. choose one from each column, create the two gates in-game, and combine their outputs with a common wire.
             </p>
             <h3>(November 2023 update) This version now lists all equivalent functions!</h3>
             <p>
